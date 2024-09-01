@@ -1,7 +1,23 @@
-CREATE TABLE Clientes (
-    id_cliente INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE Autores (
+    id_autor INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
-    email VARCHAR(100),
-    telefone VARCHAR(15),
-    endereco VARCHAR(255)
+    pais_origem VARCHAR(50)
+);
+
+CREATE TABLE Livros (
+    id_livro INT AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(200) NOT NULL,
+    id_autor INT,
+    ano_publicacao YEAR,
+    genero VARCHAR(50),
+    FOREIGN KEY (id_autor) REFERENCES Autores(id_autor)
+);
+
+CREATE TABLE Emprestimos (
+    id_emprestimo INT AUTO_INCREMENT PRIMARY KEY,
+    id_livro INT,
+    data_emprestimo DATE,
+    data_devolucao DATE,
+    nome_leitor VARCHAR(100),
+    FOREIGN KEY (id_livro) REFERENCES Livros(id_livro)
 );
