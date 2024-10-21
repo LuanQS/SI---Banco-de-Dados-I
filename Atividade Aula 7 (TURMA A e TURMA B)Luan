@@ -1,0 +1,73 @@
+DROP TABLE IF EXISTS vendas;
+DROP TABLE IF EXISTS produtos;
+
+CREATE TABLE produtos (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome TEXT NOT NULL,
+    categoria TEXT NOT NULL,
+    preco REAL NOT NULL,
+    estoque INT NOT NULL
+);
+
+CREATE TABLE vendas (
+    id_venda INTEGER PRIMARY KEY AUTOINCREMENT,
+    produto_id INTEGER,
+    quantidade INT NOT NULL,
+    data_venda TEXT NOT NULL,
+    total REAL NOT NULL,
+    FOREIGN KEY (produto_id) REFERENCES produtos(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+INSERT INTO produtos (nome, categoria, preco, estoque) VALUES
+('Produto X', 'Categoria A', 120.0, 100),
+('Produto Y', 'Categoria B', 180.0, 80),
+('Produto Z', 'Categoria A', 90.0, 60),
+('Produto W', 'Categoria C', 60.0, 150),
+('Produto V', 'Categoria B', 220.0, 75);
+
+INSERT INTO vendas (produto_id, quantidade, data_venda, total) 
+SELECT 1, 5, '2024-10-10', 600.0 
+FROM produtos 
+WHERE id = 1;
+
+INSERT INTO vendas (produto_id, quantidade, data_venda, total) 
+SELECT 2, 3, '2024-10-11', 540.0 
+FROM produtos 
+WHERE id = 2;
+
+INSERT INTO vendas (produto_id, quantidade, data_venda, total) 
+SELECT 3, 7, '2024-10-12', 630.0 
+FROM produtos 
+WHERE id = 3;
+
+INSERT INTO vendas (produto_id, quantidade, data_venda, total) 
+SELECT 4, 10, '2024-10-13', 600.0 
+FROM produtos 
+WHERE id = 4;
+
+INSERT INTO vendas (produto_id, quantidade, data_venda, total) 
+SELECT 5, 4, '2024-10-14', 880.0 
+FROM produtos 
+WHERE id = 5;
+
+CREATE INDEX idx_categoria_produtos ON produtos (categoria);
+CREATE INDEX idx_produto_id_vendas ON vendas (produto_id);
+
+BEGIN TRANSACTION;
+
+UPDATE produtos
+SET estoque = estoque - 3
+WHERE id = 2;
+
+INSERT INTO vendas (produto_id, quantidade, data_venda, total)
+SELECT 2, 3, DATE('now'), 540.0 
+FROM produtos 
+WHERE id = 2 AND estoque >= 0;
+
+COMMIT;
+
+SELECT * FROM produtos
+WHERE estoque > 0;
+
+SELECT * FROM vendas
+WHERE data_venda = '2024-10-11';
