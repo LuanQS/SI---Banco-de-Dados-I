@@ -1,0 +1,140 @@
+
+
+1
+CREATE TABLE Estudantes (
+2
+    id_estudante INT PRIMARY KEY,
+3
+    nome VARCHAR(100),
+4
+    data_nascimento DATE,
+5
+    altura DECIMAL(3, 2),
+6
+    email VARCHAR(100),
+7
+    ativo BOOLEAN
+8
+);
+9
+​
+10
+CREATE TABLE Cursos (
+11
+    id_curso INT PRIMARY KEY,
+12
+    nome_curso VARCHAR(100),
+13
+    descricao TEXT,
+14
+    duracao_horas INT,
+15
+    preco DECIMAL(10, 2)
+16
+);
+17
+​
+18
+CREATE TABLE Matriculas (
+19
+    id_estudante INT,
+20
+    id_curso INT,
+21
+    data_matricula TIMESTAMP,
+22
+    nota_final FLOAT,
+23
+    PRIMARY KEY (id_estudante, id_curso),
+24
+    FOREIGN KEY (id_estudante) REFERENCES Estudantes(id_estudante),
+25
+    FOREIGN KEY (id_curso) REFERENCES Cursos(id_curso)
+26
+);
+27
+​
+28
+-- Inserindo estudantes
+29
+INSERT INTO Estudantes (id_estudante, nome, data_nascimento, altura, email, ativo) 
+30
+VALUES 
+31
+(1, 'João', '1998-04-21', 1.75, 'joao@email.com', TRUE),
+32
+(2, 'Maria', '2000-07-15', 1.65, 'maria@email.com', TRUE),
+33
+(3, 'Pedro', '1997-01-30', 1.80, 'pedro@email.com', FALSE);
+34
+​
+35
+-- Inserindo cursos
+36
+INSERT INTO Cursos (id_curso, nome_curso, descricao, duracao_horas, preco)
+37
+VALUES 
+38
+(1, 'Matemática', 'Curso básico de matemática', 40, 500.00),
+39
+(2, 'Física', 'Curso avançado de física', 60, 800.00),
+40
+(3, 'Química', 'Curso intermediário de química', 50, 600.00);
+41
+​
+42
+-- Inserindo matrículas
+43
+INSERT INTO Matriculas (id_estudante, id_curso, data_matricula, nota_final)
+44
+VALUES 
+45
+(1, 1, '2023-09-01 10:30:00', 9.5),
+46
+(2, 2, '2023-09-05 15:00:00', 8.0);
+47
+​
+48
+-- Consulta final
+49
+SELECT Estudantes.nome, Cursos.nome_curso, Matriculas.nota_final
+50
+FROM Estudantes
+51
+INNER JOIN Matriculas ON Estudantes.id_estudante = Matriculas.id_estudante
+52
+INNER JOIN Cursos ON Matriculas.id_curso = Cursos.id_curso;
+53
+​
+History
+Syntax
+History
+SQLite
+CREATE TABLE Estudantes (
+    id_estudante INT PRIMARY KEY,
+    nome VARCHAR(100),
+    data_nascimen
+...
+
+
+
+
+22:57:41
+History
+About
+ Settings
+Left Menu
+Editor
+Skins
+
+Night
+
+
+Color settings
+
+Table
+Hover cell
+None
+
+Format number
+None
